@@ -5,9 +5,9 @@
 <head>
   <meta charset="utf-8">
 
-  <title>The HTML5 Herald</title>
-  <meta name="description" content="The HTML5 Herald">
-  <meta name="author" content="SitePoint">
+  <title>Angular Fan Playground</title>
+  <meta name="description" content="Angular Fan Tutorial">
+  <meta name="author" content="Streamweaver">
 
   <!-- Latest compiled and minified CSS -->
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
@@ -26,20 +26,40 @@
   <![endif]-->
 
   <!-- Local Code -->
-  <script src="assets/js/app.js"></script>
+  <script src="/assets/js/app.js"></script>
 </head>
 
 <body ng-controller="StoreController as store">
   <div class="container">
     <h1>Gem Store</h1>
-    <div class="panel panel-default" ng-repeat="gem in store.products">
+    <div class="panel panel-default" ng-repeat="gem in store.products | orderBy:'price'">
       <div class="panel-heading">
-        <h1 class="panel-title">{{gem.name}}</h1>
+        <em class="pull-right">{{gem.price | currency }}</em>
+        <h1 class="panel-title">{{gem.name |  uppercase }}</h1>
       </div>
       <div class="panel-body">
-        <em class="pull-right">${{gem.price}}</em>
-        <p>{{gem.description}}</p>
-        <button ng-show="gem.canPurchase" class="btn btn-default">Add to Cart</button>
+        <div class="text-center">
+          <img ng-src="{{gem.img}}" ng-show="gem.img.length" height="128" width="128" class="img-thumbnail"/>
+        </div>
+        <div ng-controller="PanelController as panel">
+          <ul class="nav nav-pills" >
+            <li ng-class="{ active:panel.isSelected(1) }"> <a href ng-click="panel.selectedTab(1)">Description</a> </li>
+            <li ng-class="{ active:panel.isSelected(2) }"> <a href ng-click="panel.selectedTab(2)">Specification</a> </li>
+            <li ng-class="{ active:panel.isSelected(3) }"> <a href ng-click="panel.selectedTab(3)">Reviews</a> </li>
+          </ul>
+          <div class="panel" ng-show="panel.isSelected(1)">
+            <h4>Description</h4>
+            <p>{{gem.description}}</p>
+          </div>
+          <div class="panel" ng-show="panel.isSelected(2)">
+            <h4>Secification</h4>
+            <p>Not Implemented</p>
+          </div>
+          <div class="panel" ng-show="panel.isSelected(3)">
+            <h4>Reviews</h4>
+            <p>Not Implemented</p>
+          </div>
+        </div>
       </div>
     </div>
   <div>
