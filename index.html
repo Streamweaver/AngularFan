@@ -14,6 +14,7 @@
 
   <!-- Optional theme -->
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap-theme.min.css">
+  <link rel="stylesheet" type="text/css" href="/assets/css/site.css">
 
   <!-- Latest compiled and minified bootstrap JavaScript -->
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
@@ -31,37 +32,82 @@
 
 <body ng-controller="StoreController as store">
   <div class="container">
-    <h1>Gem Store</h1>
-    <div class="panel panel-default" ng-repeat="gem in store.products | orderBy:'price'">
-      <div class="panel-heading">
-        <em class="pull-right">{{gem.price | currency }}</em>
-        <h1 class="panel-title">{{gem.name |  uppercase }}</h1>
-      </div>
-      <div class="panel-body">
-        <div class="text-center">
-          <img ng-src="{{gem.img}}" ng-show="gem.img.length" height="128" width="128" class="img-thumbnail"/>
-        </div>
-        <div ng-controller="PanelController as panel">
-          <ul class="nav nav-pills" >
-            <li ng-class="{ active:panel.isSelected(1) }"> <a href ng-click="panel.selectedTab(1)">Description</a> </li>
-            <li ng-class="{ active:panel.isSelected(2) }"> <a href ng-click="panel.selectedTab(2)">Specification</a> </li>
-            <li ng-class="{ active:panel.isSelected(3) }"> <a href ng-click="panel.selectedTab(3)">Reviews</a> </li>
-          </ul>
-          <div class="panel" ng-show="panel.isSelected(1)">
-            <h4>Description</h4>
-            <p>{{gem.description}}</p>
-          </div>
-          <div class="panel" ng-show="panel.isSelected(2)">
-            <h4>Secification</h4>
-            <p>Not Implemented</p>
-          </div>
-          <div class="panel" ng-show="panel.isSelected(3)">
-            <h4>Reviews</h4>
-            <p>Not Implemented</p>
-          </div>
-        </div>
-      </div>
-    </div>
-  <div>
+    <main>
+      <header>
+        <h1>Gem Store</h1>
+      </header>
+      <section class="panel panel-default" ng-repeat="gem in store.products | orderBy:'-price'">
+        <header class="panel-heading">
+          <em class="pull-right">{{gem.price | currency }}</em>
+          <h1 class="panel-title">{{gem.name | uppercase }}</h1>
+        </header>
+        <article class="panel-body">
+          <img ng-src="{{gem.img}}" ng-show="gem.img.length" height="128" width="128" class="img-thumbnail" />
+          <section ng-controller="PanelController as panel">
+            <ul class="nav nav-pills">
+              <li ng-class="{ active:panel.isSelected(1) }"> <a href ng-click="panel.selectedTab(1)">Description</a> </li>
+              <li ng-class="{ active:panel.isSelected(2) }"> <a href ng-click="panel.selectedTab(2)">Specification</a> </li>
+              <li ng-class="{ active:panel.isSelected(3) }"> <a href ng-click="panel.selectedTab(3)">Reviews</a> </li>
+            </ul>
+            <ul class="list-group">
+              <li class="list-group-item" ng-show="panel.isSelected(1)">
+                <h4>Description</h4>
+                <p>{{gem.description}}</p>
+              </li>
+              <li class="list-group-item" ng-show="panel.isSelected(2)">
+                <h4>Secification</h4>
+                <p>Not Implemented</p>
+              </li>
+              <li class="list-group-item" ng-show="panel.isSelected(3)">
+                <h4>Reviews</h4>
+                <ul class="list-group">
+                  <li ng-repeat="review in gem.reviews | orderBy:'-star'" class="list-group-item">
+                    <strong>{{ review.stars }} Stars</strong>
+                    <p>{{ review.body }}</p>
+                    <cite>by: {{ review.author }} on {{ review.createdOn | date:"MM/dd/yyyy - hh:mm"}}</cite>
+                  </li>
+                  <form name="reviewForm"
+                  ng-controller="ReviewController as reviewCtrl"
+                  ng-submit="reviewForm.$valid && reviewCtrl.addReview(gem)"
+                  novalidate>
+                    <li class="list-group-item">
+                      <strong>{{reviewCtrl.review.stars}} Stars</strong>
+                      <p>
+                        {{reviewCtrl.review.body}}
+                      </p>
+                      <cite>by: {{reviewCtrl.review.author}}</cite>
+                      <h4>Submit Review</h4>
+                      <fieldset class="form-group">
+                        <select ng-model="reviewCtrl.review.stars"
+                          ng-options="stars for stars in [5,4,3,2,1]"
+                          class="form-control" title="Stars" required>
+                          <option value="">Rate this Gem</option>
+                        </select>
+                        <textarea ng-model="reviewCtrl.review.body"
+                          class="form-control"
+                          placeholder="Write a short review..."
+                          title="Review" required>
+                        </textarea>
+                        <input ng-model="reviewCtrl.review.author" type="email"
+                          class="form-control"
+                          placeholder="you@emailaddress.com ..."
+                          title="Author" required />
+                        <input type="submit" class="btn btn-primary pull-right"
+                          value="Submit Review" />
+                        <div>
+                          Review form is {{reviewForm.$valid}}
+                        </div>
+                      </fieldset>
+                    </li>
+                  </form>
+                </ul>
+              </li>
+            </ul>
+          </section>
+        </article>
+      </section>
+    </main>
+    <div>
 </body>
+
 </html>
