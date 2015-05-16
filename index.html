@@ -38,8 +38,7 @@
       </header>
       <section class="panel panel-default" ng-repeat="gem in store.products | orderBy:'-price'">
         <header class="panel-heading">
-          <em class="pull-right">{{gem.price | currency }}</em>
-          <h1 class="panel-title">{{gem.name | uppercase }}</h1>
+          <gem-header> </gem-header>
         </header>
         <article class="panel-body">
           <img ng-src="{{gem.img}}" ng-show="gem.img.length" height="128" width="128" class="img-thumbnail" />
@@ -68,7 +67,7 @@
                   </li>
                   <form name="reviewForm"
                   ng-controller="ReviewController as reviewCtrl"
-                  ng-submit="reviewForm.$valid && reviewCtrl.addReview(gem)"
+                  ng-submit="reviewForm.$valid && reviewCtrl.addReview(gem) && reviewCtrl.$setPristine()"
                   novalidate>
                     <li class="list-group-item">
                       <strong>{{reviewCtrl.review.stars}} Stars</strong>
@@ -94,9 +93,6 @@
                           title="Author" required />
                         <input type="submit" class="btn btn-primary pull-right"
                           value="Submit Review" />
-                        <div>
-                          Review form is {{reviewForm.$valid}}
-                        </div>
                       </fieldset>
                     </li>
                   </form>

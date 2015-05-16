@@ -6,12 +6,26 @@ Not much to see here. This is just some code I'm poking at as I work through som
 Dependencies
 ------------
 
-The only dependencies are for running this under a nodejs http server for development which requires NodeJS (of course). The rest is setup through the package.json and bower.json files.
+The only central requirements are a NodeJS and Bower global install.
+
+I use Chocolatey on windows, Homebrew on Mac and apt-get on Linux but install these however you find convienent on your system.
+
+An example of installing via Chocolatey:
+
+```
+>choco install npm.install
+```
+
+Then install bower globally through npm.
+
+```
+>npm install -g bower
+```
 
 Running Development Server
 --------------------------
 
-To run the NodeJS Web server just go to a command line and type
+To run the NodeJS Web server just go to a command line and from the project root type:
 
 ```
   >npm install

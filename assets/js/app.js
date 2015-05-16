@@ -75,4 +75,11 @@
       return input.substring(0, 1).toUpperCase() + input.substring(1);
     }
   });
+
+  app.directive('gemHeader', function() {
+    return {
+      restrict: 'E',
+      templateUrl: '/product-header.html',
+    };
+  });
 })();
